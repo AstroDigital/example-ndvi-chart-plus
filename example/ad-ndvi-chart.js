@@ -26,21 +26,22 @@ let fieldIndex = 0;
 /* Chart.js requires a sequentially ordered array of values to set the
 y-position of each datapoint on the horizontal axis, along with a matching
 list of values to use as labels, so we will break the NDVI date and values
-properties into individual arrays, reversing them in the process in order to
-account for the fact that the values response product is arranged by descending
-dates, whereas we want the chart to show ascending dates from left to right. */
+properties into individual arrays. We will then reverse the arrays in order to
+account for the fact that the values response product is ordered by descending
+dates, whereas we want the chart to show dates ascending from left to right. */
 const ndviValues = ndviData[fieldIndex].map((field) => field.value).reverse();
 const ndviDates = ndviData[fieldIndex].map((field) => field.date).reverse();
 
 /* In order to demonstrate melding of datasources, we will include an array
-of precipitation values provided by NOAA. To match up with the NDVI values,
-Chart.js requires this array to have a one-to-one relationship with the dates
-in the NDVI array. */
+of precipitation values provided by NOAA. To match the NDVI values, Chart.js
+requires this array to have a one-to-one relationship with the dates in the
+NDVI array. */
 const precipValues = noaaPrecipData.map((date) => date.value).reverse();
 
-/* Chart.js  requires a data object, which is an array including an item for
-each axis. It is here that we name our axis, define their datasources, and
-and describe the style of their lines, data points, and fill. */
+/* Chart.js must be initialized with a data object, which is an array
+representing settings for each axis. It is here that we name our axes, define
+their datasources, and and describe the style of their lines, data points, and
+fill. */
 var chartData = {
   labels: ndviDates,
   datasets: [{
@@ -54,7 +55,7 @@ var chartData = {
     label: 'Precipitation (in)',
     yAxisID: 'y-axis-2',
     data: precipValues,
-    /* Fill is set to false, so that only a line is displayed, rather than
+    /* Fill is set to false so that only a line is displayed, rather than
     displaying a filled area as is the default. */
     fill: false,
     borderColor: 'rgba(27, 155, 255, 1)',
@@ -63,7 +64,7 @@ var chartData = {
 };
 
 /* Chart.js also requires a set of options, which define the overall
-characteristics of the chart along with those of the individual axis. */
+characteristics of the chart along with those of its individual axes. */
 var chartOptions = {
   // Enables dynamic resizing of the chart to fit its container.
   responsive: true,
@@ -72,7 +73,7 @@ var chartOptions = {
   will maintain the original aspect ratio even if its container only expands
   in one direction. */
   maintainAspectRatio: false,
-  // Describe the title.
+  // Define the chart's title.
   title: {
     display: true,
     text: `NDVI / Precipitation (Field Index: ${fieldIndex})`,
@@ -96,7 +97,7 @@ var chartOptions = {
     yAxes: [{
       id: 'y-axis-1',
       scaleType: 'linear',
-      // Set the scale of NDVI value labels to the left side of the chart.
+      // Set the NDVI value scale labels to the left side of the chart.
       position: 'left',
       /* Ensure that the NDVI values scale begins at 0 and ends at 1, regardless
       of the actual range of the data. */
@@ -107,13 +108,13 @@ var chartOptions = {
     }, {
       id: 'y-axis-2',
       scaleType: 'linear',
-      // Set the scale of precipitation labels to the right side of the chart.
+      // Set the precipitation scale labels to the right side of the chart.
       position: 'right'
     }]
   }
 };
 
-/* Define a new Chart.js chart using the previously-defined options. The initial
+/* Define a new Chart.js chart using the previously-defined options. The
 initial datasource is the NDVI values of the field at index 0, which we will
 increment through by using the chart's update method. */
 var ctx = document.getElementById('chart');
