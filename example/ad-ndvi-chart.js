@@ -6,11 +6,10 @@
 Digital's values API, along with precipitation values provided by NOAA, to
 create a chart of NDVI response as it relates to rainfall over time. There are
 many ways to approach this, but we will use the open source Chart.js library.
-Chart.js is very powerful, with many configureable options, and it is worth
-browsing its documentation to learn more about its capabilities. This tutorial
-will keep things relatively simple by taking advantage of default settings,
+Chart.js is very powerful, with many configureable options. This tutorial
+will keep things relatively simple by taking advantage of default settings
 whenever possible, but you are encouraged to check out the documentation at
-http://www.chartjs.org/docs/
+http://www.chartjs.org/docs/ for more advanced usage examples.
 
 To prepare the data for charting, we will will discard the geometry and
 create an array of values representing only the value and date of each NDVI
