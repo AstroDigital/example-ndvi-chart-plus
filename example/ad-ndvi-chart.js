@@ -1,16 +1,9 @@
+/* global adNdviData noaaPrecipData Chart*/
 ' use strict';
 
 / !!! PROGRAM BEGINS HERE !!! /
 
-/* In this tutorial, we will demonstrate using NDVI values provided by Astro
-Digital's values API, along with precipitation values provided by NOAA, to
-create a chart of NDVI response as it relates to rainfall over time. There are
-many ways to approach this, but we will use the open source Chart.js library.
-Chart.js is very powerful, with many configureable options. This tutorial
-will keep things relatively simple by taking advantage of default settings
-whenever possible, but you are encouraged to check out the documentation at
-http://www.chartjs.org/docs/ for more advanced usage examples.
-
+/*
 To prepare the data for charting, we will will discard the geometry and
 create an array of values representing only the value and date of each NDVI
 measurement for each feature. */
@@ -49,30 +42,22 @@ var chartData = {
     data: ndviValues,
     borderColor: 'rgba(119, 226, 24, 1)',
     backgroundColor: 'rgba(119, 226, 24, 0.2)',
-    pointBackgroundColor: 'rgba(123, 255, 26, .8)',
+    pointBackgroundColor: 'rgba(123, 255, 26, .8)'
   }, {
     label: 'Precipitation (in)',
     yAxisID: 'y-axis-2',
     data: precipValues,
-    /* Fill is set to false so that only a line is displayed, rather than
-    displaying a filled area as is the default. */
     fill: false,
     borderColor: 'rgba(27, 155, 255, 1)',
-    pointBackgroundColor: 'rgba(27, 155, 255, .8)',
+    pointBackgroundColor: 'rgba(27, 155, 255, .8)'
   }]
 };
 
 /* Chart.js also requires a set of options, which define the overall
 characteristics of the chart along with those of its individual axes. */
 var chartOptions = {
-  // Enables dynamic resizing of the chart to fit its container.
   responsive: true,
-  /* Setting the maintainAspectRatio option to false means that the chart will
-  expand to fill its container regardless of shape, whereas if set to true it
-  will maintain the original aspect ratio even if its container only expands
-  in one direction. */
   maintainAspectRatio: false,
-  // Define the chart's title.
   title: {
     display: true,
     text: `NDVI / Precipitation (Field Index: ${fieldIndex})`,
@@ -96,18 +81,14 @@ var chartOptions = {
     yAxes: [{
       id: 'y-axis-1',
       scaleType: 'linear',
-      // Set the NDVI value scale labels to the left side of the chart.
       position: 'left',
-      /* Ensure that the NDVI values scale begins at 0 and ends at 1, regardless
-      of the actual range of the data. */
       ticks: {
         beginAtZero: true,
-        max: 1,
+        max: 1
       }
     }, {
       id: 'y-axis-2',
       scaleType: 'linear',
-      // Set the precipitation scale labels to the right side of the chart.
       position: 'right'
     }]
   }
@@ -132,6 +113,5 @@ setInterval(() => {
   chart.options.title.text = `NDVI / Precipitation (Field Index: ${fieldIndex})`
   // Set the chart's values to reference the active field index.
   chart.data.datasets[0].data = ndviData[fieldIndex].map((field) => field.value).reverse();
-  // Update the chart.
   chart.update();
 }, 500);
