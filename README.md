@@ -19,12 +19,33 @@ const ndviData = adNdviData.results.map((field) => {
 });
 ```
 
+The response from the API has data in descending data order, so we reverse that while grabbing the data needed for charting.
+
+```js
+const ndviValues = ndviData[fieldIndex].map((field) => field.value).reverse();
+const ndviDates = ndviData[fieldIndex].map((field) => field.date).reverse();
+```
+
 In order to demonstrate melding of datasources, we will include an array of precipitation values provided by NOAA. To match the NDVI values, Chart.js requires this array to have a one-to-one relationship with the dates in the NDVI array.
 ```js
 const precipValues = noaaPrecipData.map((date) => date.value).reverse();
 ```
 
-After formatting the datasource and defining chart options, we can instantiate a new Chart.js chart, the initial datasource of which is the NDVI values of the field at index 0. We will then increment through the values of other fields by using the chart's update method.
+Chart.js must be initialized with a data object, which is an array representing settings for each axis. It is here that we name our axes and define their datasources.
+var chartData = {
+  labels: ndviDates,
+  datasets: [{
+    label: 'NDVI',
+    yAxisID: 'y-axis-1',
+    data: ndviValues
+  }, {
+    label: 'Precipitation (in)',
+    yAxisID: 'y-axis-2',
+    data: precipValues,
+  }]
+};
+
+After [formatting the datasource and defining chart options](https://github.com/AstroDigital/example-ndvi-chart-plus/blob/master/example/ad-ndvi-chart.js#L33-L95), we can instantiate a new Chart.js chart, the initial datasource of which is the NDVI values of the field at index 0. We will then increment through the values of other fields by using the chart's update method. `chartOptions` is defined in [our example code]((https://github.com/AstroDigital/example-ndvi-chart-plus/blob/master/example/ad-ndvi-chart.js#L33-L95)), see [Chart.js docs](http://www.chartjs.org/docs/) for details
 ```js
 var ctx = document.getElementById('chart');
 var chart = new Chart(ctx, {
